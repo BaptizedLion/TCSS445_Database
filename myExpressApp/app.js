@@ -9,6 +9,35 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+//added variables michael
+const mysql = require('mysql');
+//changed PORT from 3000 to 3001 because 3000 was taken
+const PORT = 3001;
+
+//creating a connection to mysql database
+const connection = mysql.createConnection({
+host: 'localhost',
+user: 'root',
+password: 'password',
+database: "library_test"
+});
+
+//open the mySQL connection
+connection.connect(error => {
+if (error){
+  console.log("A error has occurred" +
+    "while attempting to connect to database");
+    throw error;
+}
+
+//if no error, proceed to express server
+app.listen(PORT, ()=>{
+  console.log("Database connection is ready and" +
+    "Server is listening on Port", PORT);
+
+})
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

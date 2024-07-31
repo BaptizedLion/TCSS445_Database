@@ -1,9 +1,9 @@
+extends layout
 
-doctype html
-html
-  head
-    title #{title} //- This is a comment in Pug, it won't be rendered
-  body
-    h1 Library System
-    p Library Database Management System
-    p TCSS 445 Summer 2024 | by Michael, Hamda, Simran
+block content
+  h1 Library System
+  if articles && articles.length
+    each article, i in articles
+      li= article.title
+  else
+    p No articles found.

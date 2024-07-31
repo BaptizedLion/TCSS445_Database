@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const express = require("express");
+const router = express.Router();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -13,6 +14,13 @@ const app = express();
 const mysql = require("mysql");
 //changed PORT from 3000 to 3001 because 3000 was taken
 const PORT = 3001;
+
+// add route
+app.get("/books/add", function (req, res) {
+  res.render("add_book", {
+    title: "Add Book",
+  });
+});
 
 //creating a connection to mysql database
 const connection = mysql.createConnection({
@@ -52,29 +60,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-
-//Home Route
-app.get("/", function (req, res) {
-  res.render("index", {
-    title: "Library System",
-  });
-});
-
-// add route
-app.get("/books/add", function (req, res) {
-  res.render("add_book", {
-    title: "add book",
-  });
-});
-
-app.get("/", function (req, res) {
-  console.log("Rendering index with title:", "Library System");
-  console.log("Another Variable:", "Test Variable");
-  res.render("index", {
-    title: "Library System",
-    anotherVariable: "Test Variable",
-  });
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

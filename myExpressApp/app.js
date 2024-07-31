@@ -57,17 +57,15 @@ app.use("/users", usersRouter);
 app.get("/", function (req, res) {
   res.render("index", {
     title: "Library System",
-    anotherVariable: "Test Variable",
   });
 });
 
-//add route
-app.get("/Books/add"),
-  function (req, res) {
-    res.render("add_book", {
-      title: "add book",
-    });
-  };
+// add route
+app.get("/books/add", function (req, res) {
+  res.render("add_book", {
+    title: "add book",
+  });
+});
 
 app.get("/", function (req, res) {
   console.log("Rendering index with title:", "Library System");

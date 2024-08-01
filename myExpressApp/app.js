@@ -7,6 +7,7 @@ const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const booksRouter = require("./routes/books");
 
 const app = express();
 
@@ -48,6 +49,12 @@ connection.connect((error) => {
   });
 });
 
+//fetch data from database 8/1/2024
+connection.query("SELECT * FROM Books", (err, results, fields) => {
+  if (err) throw err;
+  console.log(results);
+});
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -60,6 +67,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/books", booksRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

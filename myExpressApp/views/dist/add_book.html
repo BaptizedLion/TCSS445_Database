@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Library System</title>
+  </head>
+  <body>
+    <h1></h1>
+    <form method="POST" action="/books/add">
+      <div>
+        <label for="title">Title:</label>
+        <input id="title" type="text" name="title" required>
+      </div>
+      <div>
+        <label for="author">Author:</label>
+        <select id="author" name="author_id" required>
+          <option value="">No authors available</option>
+        </select>
+      </div>
+      <div>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description"></textarea>
+      </div>
+      <button type="submit">Add Book</button>
+    </form><br>
+    <hr>
+    <footer>
+      <p>Copyright &copy; 2024</p>
+    </footer>
+  </body>
+</html>

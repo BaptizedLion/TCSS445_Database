@@ -1,6 +1,23 @@
 extends layout
 
 block content
-   h1 Add Book
-   h3 Library Database Management System
-   h3 TCSS 445 Summer 2024 | by Michael, Hamda, Simran
+  h1= title
+  form(method='POST' action='/books/add')
+    div
+      label(for='title') Title:
+      input#title(type='text' name='title' required)
+    
+    div
+      label(for='author') Author:
+      select#author(name='author_id' required)
+        if authors && authors.length
+          each author in authors
+            option(value=author.id)= author.name
+        else
+          option(value='') No authors available
+    
+    div
+      label(for='description') Description:
+      textarea#description(name='description')
+    
+    button(type='submit') Add Book

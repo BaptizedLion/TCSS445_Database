@@ -1,11 +1,11 @@
 "use strict";
 
-var express = require('express');
+var express = require("express");
 
 var router = express.Router();
 /* GET home page. */
 
-router.get('/', function (req, res, next) {
+router.get("/", function (req, res, next) {
   var articles = [{
     id: 1,
     title: "Book One",
@@ -23,8 +23,8 @@ router.get('/', function (req, res, next) {
     body: "This is book three"
   }];
   console.error("Articles:", articles);
-  res.render('index', {
-    title: 'Library System',
+  res.render("index", {
+    title: "Library System",
     articles: articles
   });
 });

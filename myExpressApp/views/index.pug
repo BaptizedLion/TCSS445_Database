@@ -1,9 +1,49 @@
 extends layout
 
 block content
-  h1 Library System
-  if articles && articles.length
-    each article, i in articles
-      li= article.title
-  else
-    p No articles found.
+  .container
+    header
+      img.logo(src="/images/bibliopedia.png" alt="Team Logo")
+      h1.title Bibliopedia Project
+
+    section.overview
+      h2 Overview
+      p This is a brief overview of the Bibliopedia project. It provides a quick snapshot of what our project is about and its main goals.
+
+    section.project-description
+      h2 Project Description
+      p 
+        | Bibliopedia is a comprehensive library management system designed to streamline 
+        | book cataloging, borrowing, and returning processes. Our system aims to enhance 
+        | the efficiency of library operations and improve user experience for both 
+        | librarians and patrons.
+
+    section.team-members
+      h2 Team Members
+      ul
+        li
+          h3 John Doe
+          p Role: Project Manager
+          p Email: john.doe@example.com
+          p Phone: (123) 456-7890
+
+        li
+          h3 Jane Smith
+          p Role: Lead Developer
+          p Email: jane.smith@example.com
+          p Phone: (098) 765-4321
+
+        li
+          h3 Alex Johnson
+          p Role: UI/UX Designer
+          p Email: alex.johnson@example.com
+          p Phone: (111) 222-3333
+
+    section.contact
+      h2 Contact Us
+      p 
+        | For more information about the Bibliopedia project, please contact us at:
+        br
+        | Email: info@bibliopedia.com
+        br
+        | Phone: (555) 123-4567

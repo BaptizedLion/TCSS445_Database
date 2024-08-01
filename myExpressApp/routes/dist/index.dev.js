@@ -24,7 +24,7 @@ router.get("/", function (req, res, next) {
   }];
   console.error("Articles:", articles);
   res.render("index", {
-    title: "Library System",
+    title: "",
     articles: articles
   });
 });

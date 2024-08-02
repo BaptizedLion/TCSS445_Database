@@ -3,9 +3,27 @@ extends layout
 block content
   h1= title
   p You searched for: #{query}
-  if results.length
-    ul
-      each book in results
-        li= book.title
+  if results && results.length
+    p Found #{results.length} results
+    table
+      thead
+        tr
+          th ISBN
+          th Title
+          th Author ID
+          th Publication Year
+          th Publisher
+          th Genre
+          th Book Cost
+      tbody
+        each book in results
+          tr
+            td= book.isbn || book.ISBN
+            td= book.title || book.TITLE
+            td= book.authorId || book.AUTHORID
+            td= book.pubYear || book.PUBYEAR
+            td= book.publisher || book.PUBLISHER
+            td= book.genre || book.GENRE
+            td= (book.bookCost || book.BOOKCOST) ? `$${(book.bookCost || book.BOOKCOST).toFixed(2)}` : 'N/A'
   else
     p No results found.

@@ -62,6 +62,39 @@ connection.query("SELECT * FROM Books", (err, results, fields) => {
   console.log(results);
 });
 
+// Route to handle search queries
+router.get("/search", function (req, res, next) {
+  const searchQuery = req.query.query;
+  const sql = `
+    SELECT 
+      ISBN as isbn, 
+      TITLE as title, 
+      AUTHORID as authorId, 
+      PUBYEAR as pubYear, 
+      PUBLISHER as publisher, 
+      GENRE as genre, 
+      BOOKCOST as bookCost 
+    FROM books 
+    WHERE LOWER(TITLE) LIKE LOWER(?)
+  `;
+  const values = [`%${searchQuery}%`];
+
+  connection.query(sql, values, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res
+        .status(500)
+        .send("An error occurred while executing the query.");
+    }
+    console.log("Query Results:", results);
+    res.render("searchResults", {
+      title: "Search Results",
+      query: searchQuery,
+      results: results,
+    });
+  });
+});
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");

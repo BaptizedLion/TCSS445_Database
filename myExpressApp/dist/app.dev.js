@@ -59,6 +59,25 @@ connection.connect(function (error) {
 connection.query("SELECT * FROM Books", function (err, results, fields) {
   if (err) throw err;
   console.log(results);
+}); // Route to handle search queries
+
+router.get("/search", function (req, res, next) {
+  var searchQuery = req.query.query;
+  var sql = "\n    SELECT \n      ISBN as isbn, \n      TITLE as title, \n      AUTHORID as authorId, \n      PUBYEAR as pubYear, \n      PUBLISHER as publisher, \n      GENRE as genre, \n      BOOKCOST as bookCost \n    FROM books \n    WHERE LOWER(TITLE) LIKE LOWER(?)\n  ";
+  var values = ["%".concat(searchQuery, "%")];
+  connection.query(sql, values, function (err, results) {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).send("An error occurred while executing the query.");
+    }
+
+    console.log("Query Results:", results);
+    res.render("searchResults", {
+      title: "Search Results",
+      query: searchQuery,
+      results: results
+    });
+  });
 }); // view engine setup
 
 app.set("views", path.join(__dirname, "views"));

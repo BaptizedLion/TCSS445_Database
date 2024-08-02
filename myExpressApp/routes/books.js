@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const connection = require("../db"); 
+const mysql = require("mysql");
+const app = express();
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "password",
+  database: "library_test",
+});
 
 router.get("/add", (req, res) => {
   connection.query("SELECT id, name FROM authors", (err, authors) => {
@@ -13,7 +20,7 @@ router.get("/add", (req, res) => {
 
     res.render("add_book", {
       title: "Add New Book",
-      authors: authors, 
+      authors: authors,
     });
   });
 });
@@ -33,4 +40,27 @@ router.post("/add", (req, res) => {
   });
 });
 
+//get for findBook
+router.get("/find", function (req, res, next) {
+  res.render("findBook", { title: "Find a Book" });
+});
+
+// add route
+app.get("/books/add", function (req, res) {
+  res.render("add_book", {
+    title: "Add Book",
+  });
+});
+
+//search route for findBook
+router.get("/search", function (req, res, next) {
+  const query = req.query.query;
+  // Here you would typically search your database
+  // For now, we'll just send back the query
+  res.render("searchResults", {
+    title: "Search Results",
+    query: query,
+    results: [],
+  });
+});
 module.exports = router;

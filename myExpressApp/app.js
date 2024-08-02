@@ -23,6 +23,13 @@ app.get("/books/add", function (req, res) {
   });
 });
 
+// add route for find book
+app.get("/books/find", function (req, res) {
+  res.render("bookFind", {
+    title: "Find Book",
+  });
+});
+
 //creating a connection to mysql database
 const connection = mysql.createConnection({
   host: "localhost",

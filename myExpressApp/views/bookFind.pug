@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  form(action="/books/search" method="GET")
+    label(for="search") Search for a book:
+    input(type="text" id="search" name="query")
+    button(type="submit") Search

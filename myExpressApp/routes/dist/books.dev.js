@@ -4,8 +4,15 @@ var express = require("express");
 
 var router = express.Router();
 
-var connection = require("../db");
+var mysql = require("mysql");
 
+var app = express();
+var connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "password",
+  database: "library_test"
+});
 router.get("/add", function (req, res) {
   connection.query("SELECT id, name FROM authors", function (err, authors) {
     if (err) {
@@ -37,6 +44,29 @@ router.post("/add", function (req, res) {
     }
 
     res.redirect("/books"); // Redirect to book list
+  });
+}); //get for findBook
+
+router.get("/find", function (req, res, next) {
+  res.render("findBook", {
+    title: "Find a Book"
+  });
+}); // add route
+
+app.get("/books/add", function (req, res) {
+  res.render("add_book", {
+    title: "Add Book"
+  });
+}); //search route for findBook
+
+router.get("/search", function (req, res, next) {
+  var query = req.query.query; // Here you would typically search your database
+  // For now, we'll just send back the query
+
+  res.render("searchResults", {
+    title: "Search Results",
+    query: query,
+    results: []
   });
 });
 module.exports = router;

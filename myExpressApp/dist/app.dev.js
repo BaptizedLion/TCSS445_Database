@@ -29,6 +29,12 @@ app.get("/books/add", function (req, res) {
   res.render("add_book", {
     title: "Add Book"
   });
+}); // add route for find book
+
+app.get("/books/find", function (req, res) {
+  res.render("bookFind", {
+    title: "Find Book"
+  });
 }); //creating a connection to mysql database
 
 var connection = mysql.createConnection({

@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1= title
+  p You searched for: #{query}
+  if results.length
+    ul
+      each book in results
+        li= book.title
+  else
+    p No results found.

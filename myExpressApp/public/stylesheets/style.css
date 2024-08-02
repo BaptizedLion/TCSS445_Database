@@ -20,8 +20,9 @@ body {
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 20px;
+  font-family: Arial;
+  margin-left: 20%;
 }
 
 .beep {

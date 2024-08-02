@@ -1,8 +1,34 @@
+header {
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically (optional) */
+}
+
+.centered {
+  display: block; /* Ensures the image is treated as a block element */
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.btn {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.beep {
+  color: red;
+  text-align: center;
+}
+
+.btn:hover {
+  border-left: 3px solid blue;
 }

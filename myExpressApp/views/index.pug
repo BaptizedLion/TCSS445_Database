@@ -1,16 +1,35 @@
 extends layout
 
+
 block content
   .container
     header
-      img.logo(src="/images/bibliopedia.png" alt="Team Logo")
-      h1.title Bibliopedia Project
+      link(rel="stylesheet" href="style.css")
+      img.logo(src="/images/bibliopedia.png" alt="Team Logo" style='width:25%; height:25%;')
+      style.
+       header {
+         text-align: center; 
+         font-family: Arial;
+        }
 
     section.overview
+      style.
+       h2 {
+         text-align: center; 
+         font-family: Arial;
+        }
       h2 Overview
-      p This is a brief overview of the Bibliopedia project. It provides a quick snapshot of what our project is about and its main goals.
+      p With our library management system, we plan to design an application that will ease users to access inventory at their local library. Users often do not want to spend the time to call or visit their local libraries to find materials, so with our application, we plan on creating an application that will allow them to locate materials from the comfort of their homes. We plan to implement an inventory of books and media at the local library.
 
     section.project-description
+    style.
+       p {
+         text-align: center; 
+         font-family: Arial;
+         margin: 25px 150px 75px 150px;
+        }
+
+    section.description
       h2 Project Description
       p 
         | Bibliopedia is a comprehensive library management system designed to streamline 
@@ -18,32 +37,21 @@ block content
         | the efficiency of library operations and improve user experience for both 
         | librarians and patrons.
 
-    section.team-members
+
+    section.pages
+      h2 Queries
+      a.beep(href='/books/add') Add Book
+      
+
+    section.team
       h2 Team Members
-      ul
-        li
-          h3 John Doe
-          p Role: Project Manager
-          p Email: john.doe@example.com
-          p Phone: (123) 456-7890
-
-        li
-          h3 Jane Smith
-          p Role: Lead Developer
-          p Email: jane.smith@example.com
-          p Phone: (098) 765-4321
-
-        li
-          h3 Alex Johnson
-          p Role: UI/UX Designer
-          p Email: alex.johnson@example.com
-          p Phone: (111) 222-3333
-
-    section.contact
-      h2 Contact Us
       p 
-        | For more information about the Bibliopedia project, please contact us at:
-        br
-        | Email: info@bibliopedia.com
-        br
-        | Phone: (555) 123-4567
+        | Michael Mapanao | Hamda Jama | Simran Kaur Narwal
+        
+      section.tools
+        h2 Technology Used
+        p 
+          img.tools(src="/images/node.png" alt="node")  
+          img.tools(src="/images/pug.png" alt="pug" style='width:5%; height:5%; margin-left: 10px; margin-right: 10px;')  
+          img.tools(src="/images/express.png" alt="express")  
+

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const connection = require("../db"); // Assuming you have your database connection set up
+const connection = require("../db"); 
 
 router.get("/add", (req, res) => {
   connection.query("SELECT id, name FROM authors", (err, authors) => {
@@ -13,7 +13,7 @@ router.get("/add", (req, res) => {
 
     res.render("add_book", {
       title: "Add New Book",
-      authors: authors, // Make sure this line is present
+      authors: authors, 
     });
   });
 });
@@ -29,7 +29,7 @@ router.post("/add", (req, res) => {
       console.error("Error adding book:", err);
       return res.status(500).render("error", { message: "Error adding book" });
     }
-    res.redirect("/books"); // Redirect to book list or wherever appropriate
+    res.redirect("/books"); // Redirect to book list
   });
 });
 

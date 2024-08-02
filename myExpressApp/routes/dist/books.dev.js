@@ -4,8 +4,7 @@ var express = require("express");
 
 var router = express.Router();
 
-var connection = require("../db"); // Assuming you have your database connection set up
-
+var connection = require("../db");
 
 router.get("/add", function (req, res) {
   connection.query("SELECT id, name FROM authors", function (err, authors) {
@@ -18,8 +17,7 @@ router.get("/add", function (req, res) {
 
     res.render("add_book", {
       title: "Add New Book",
-      authors: authors // Make sure this line is present
-
+      authors: authors
     });
   });
 }); // POST route for handling form submission
@@ -38,7 +36,7 @@ router.post("/add", function (req, res) {
       });
     }
 
-    res.redirect("/books"); // Redirect to book list or wherever appropriate
+    res.redirect("/books"); // Redirect to book list
   });
 });
 module.exports = router;

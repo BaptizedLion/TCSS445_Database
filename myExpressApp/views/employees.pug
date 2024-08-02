@@ -1,0 +1,24 @@
+extends layout2.pug
+block content
+  table.ui.celled.table.center.aligned
+    thead
+      tr
+        th Avatar
+        th First Name
+        th Last Name
+        th Email
+        th Phone
+        th City
+    tbody
+      each employee in employees
+        tr
+          td
+            img.ui.mini.rounded.image(src=employee.picture.thumbnail)
+          td #{employee.name.first}
+          td #{employee.name.last}
+          td #{employee.email}
+          td #{employee.phone}
+          td #{employee.location.city}
+    tfoot
+      tr
+        th(colspan='6')

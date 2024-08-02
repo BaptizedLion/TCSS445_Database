@@ -1,11 +1,11 @@
 header {
-  display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: center; /* Centers vertically (optional) */
+  text-align: center;
+  font-family: Arial;
 }
 
-.centered {
-  display: block; /* Ensures the image is treated as a block element */
+.logo {
+  width: 25%;
+  height: 25%;
 }
 
 body {
@@ -13,7 +13,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-.btn {
+.btn1 {
   background-color: #4caf50; /* Green */
   border: none;
   color: white;
@@ -25,11 +25,22 @@ body {
   margin-left: 20%;
 }
 
-.beep {
-  color: red;
+.btn2 {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
   text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: Arial;
+  margin-left: 1%;
 }
 
-.btn:hover {
-  border-left: 3px solid blue;
+.btn1:hover {
+  border-left: 3px solid red;
+}
+
+.btn2:hover {
+  border-left: 3px solid orange;
 }

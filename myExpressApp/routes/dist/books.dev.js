@@ -57,6 +57,12 @@ app.get("/books/add", function (req, res) {
   res.render("add_book", {
     title: "Add Book"
   });
+}); //get for advancedFind
+
+router.get("/advancedFind", function (req, res, next) {
+  res.render("advancedFind", {
+    title: "Find a Book"
+  });
 }); //search route for findBook
 
 router.get("/search", function (req, res, next) {
@@ -110,6 +116,66 @@ router.get("/search", function (req, res, next) {
         minPrice: minPrice,
         maxPrice: maxPrice
       },
+      isAdvancedSearch: false,
+      // or false for basic search
+      results: results
+    });
+  });
+}); //search route for advancedFind
+
+router.get("/searchAdvanced", function (req, res, next) {
+  var _req$query2 = req.query,
+      title = _req$query2.title,
+      author = _req$query2.author,
+      genre = _req$query2.genre,
+      minPrice = _req$query2.minPrice,
+      maxPrice = _req$query2.maxPrice;
+  var sql = "\n    SELECT \n      ISBN as isbn, \n      TITLE as title, \n      AUTHORID as authorId, \n      PUBYEAR as pubYear, \n      PUBLISHER as publisher, \n      GENRE as genre, \n      BOOKCOST as bookCost \n    FROM books \n    WHERE 1=1\n  ";
+  var values = [];
+
+  if (title) {
+    sql += " AND LOWER(TITLE) LIKE LOWER(?)";
+    values.push("%".concat(title, "%"));
+  }
+
+  if (author) {
+    sql += " AND AUTHORID IN (SELECT id FROM authors WHERE LOWER(name) LIKE LOWER(?))";
+    values.push("%".concat(author, "%"));
+  }
+
+  if (genre) {
+    sql += " AND LOWER(GENRE) = LOWER(?)";
+    values.push(genre);
+  }
+
+  if (minPrice) {
+    sql += " AND BOOKCOST >= ?";
+    values.push(parseFloat(minPrice));
+  }
+
+  if (maxPrice) {
+    sql += " AND BOOKCOST <= ?";
+    values.push(parseFloat(maxPrice));
+  }
+
+  connection.query(sql, values, function (err, results) {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).send("An error occurred while executing the query.");
+    }
+
+    console.log("Query Results:", results);
+    res.render("searchResults", {
+      title: "Search Results",
+      query: {
+        title: title,
+        author: author,
+        genre: genre,
+        minPrice: minPrice,
+        maxPrice: maxPrice
+      },
+      isAdvancedSearch: true,
+      // or false for basic search
       results: results
     });
   });

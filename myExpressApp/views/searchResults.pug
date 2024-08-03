@@ -1,8 +1,22 @@
 extends layout
-
 block content
   h1= title
-  p You searched for: #{query}
+  if isAdvancedSearch
+    p Advanced search criteria:
+    ul
+      if query.title
+        li Title: #{query.title}
+      if query.author
+        li Author: #{query.author}
+      if query.genre
+        li Genre: #{query.genre}
+      if query.minPrice
+        li Minimum Price: $#{query.minPrice}
+      if query.maxPrice
+        li Maximum Price: $#{query.maxPrice}
+  else
+    p You searched for: #{query.title || "All books"}
+
   if results && results.length
     p Found #{results.length} results
     table

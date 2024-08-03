@@ -124,55 +124,60 @@ router.get("/searchAdvanced", function (req, res, next) {
 
   let sql = `
     SELECT 
-      ISBN as isbn, 
-      TITLE as title, 
-      AUTHORID as authorId, 
-      PUBYEAR as pubYear, 
-      PUBLISHER as publisher, 
-      GENRE as genre, 
-      BOOKCOST as bookCost 
-    FROM books 
+      b.ISBN as isbn, 
+      b.TITLE as title, 
+      b.AUTHORID as authorId,
+      CONCAT(a.firstname, ' ', a.lastname) as authorName, 
+      b.PUBYEAR as pubYear, 
+      b.PUBLISHER as publisher, 
+      b.GENRE as genre, 
+      b.BOOKCOST as bookCost 
+    FROM books b
+    LEFT JOIN authors a ON b.AUTHORID = a.id
     WHERE 1=1
   `;
   const values = [];
 
   if (title) {
-    sql += ` AND LOWER(TITLE) LIKE LOWER(?)`;
+    sql += ` AND LOWER(b.TITLE) LIKE LOWER(?)`;
     values.push(`%${title}%`);
   }
 
   if (author) {
-    sql += ` AND AUTHORID IN (SELECT id FROM authors WHERE LOWER(name) LIKE LOWER(?))`;
-    values.push(`%${author}%`);
+    sql += ` AND (LOWER(CONCAT(a.firstname, ' ', a.lastname)) LIKE LOWER(?) OR LOWER(a.lastname) LIKE LOWER(?))`;
+    values.push(`%${author}%`, `%${author}%`);
   }
 
   if (genre) {
-    sql += ` AND LOWER(GENRE) = LOWER(?)`;
+    sql += ` AND LOWER(b.GENRE) = LOWER(?)`;
     values.push(genre);
   }
 
   if (minPrice) {
-    sql += ` AND BOOKCOST >= ?`;
+    sql += ` AND b.BOOKCOST >= ?`;
     values.push(parseFloat(minPrice));
   }
 
   if (maxPrice) {
-    sql += ` AND BOOKCOST <= ?`;
+    sql += ` AND b.BOOKCOST <= ?`;
     values.push(parseFloat(maxPrice));
   }
+
+  console.log("SQL Query:", sql);
+  console.log("SQL Values:", values);
 
   connection.query(sql, values, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
-      return res
-        .status(500)
-        .send("An error occurred while executing the query.");
+      return res.status(500).render("error", {
+        message: "An error occurred while executing the query.",
+      });
     }
     console.log("Query Results:", results);
     res.render("searchResults", {
-      title: "Search Results",
+      title: "Advanced Search Results",
       query: { title, author, genre, minPrice, maxPrice },
-      isAdvancedSearch: true, // or false for basic search
+      isAdvancedSearch: true,
       results: results,
     });
   });

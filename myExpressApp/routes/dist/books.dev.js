@@ -130,43 +130,47 @@ router.get("/searchAdvanced", function (req, res, next) {
       genre = _req$query2.genre,
       minPrice = _req$query2.minPrice,
       maxPrice = _req$query2.maxPrice;
-  var sql = "\n    SELECT \n      ISBN as isbn, \n      TITLE as title, \n      AUTHORID as authorId, \n      PUBYEAR as pubYear, \n      PUBLISHER as publisher, \n      GENRE as genre, \n      BOOKCOST as bookCost \n    FROM books \n    WHERE 1=1\n  ";
+  var sql = "\n    SELECT \n      b.ISBN as isbn, \n      b.TITLE as title, \n      b.AUTHORID as authorId,\n      CONCAT(a.firstname, ' ', a.lastname) as authorName, \n      b.PUBYEAR as pubYear, \n      b.PUBLISHER as publisher, \n      b.GENRE as genre, \n      b.BOOKCOST as bookCost \n    FROM books b\n    LEFT JOIN authors a ON b.AUTHORID = a.id\n    WHERE 1=1\n  ";
   var values = [];
 
   if (title) {
-    sql += " AND LOWER(TITLE) LIKE LOWER(?)";
+    sql += " AND LOWER(b.TITLE) LIKE LOWER(?)";
     values.push("%".concat(title, "%"));
   }
 
   if (author) {
-    sql += " AND AUTHORID IN (SELECT id FROM authors WHERE LOWER(name) LIKE LOWER(?))";
-    values.push("%".concat(author, "%"));
+    sql += " AND (LOWER(CONCAT(a.firstname, ' ', a.lastname)) LIKE LOWER(?) OR LOWER(a.lastname) LIKE LOWER(?))";
+    values.push("%".concat(author, "%"), "%".concat(author, "%"));
   }
 
   if (genre) {
-    sql += " AND LOWER(GENRE) = LOWER(?)";
+    sql += " AND LOWER(b.GENRE) = LOWER(?)";
     values.push(genre);
   }
 
   if (minPrice) {
-    sql += " AND BOOKCOST >= ?";
+    sql += " AND b.BOOKCOST >= ?";
     values.push(parseFloat(minPrice));
   }
 
   if (maxPrice) {
-    sql += " AND BOOKCOST <= ?";
+    sql += " AND b.BOOKCOST <= ?";
     values.push(parseFloat(maxPrice));
   }
 
+  console.log("SQL Query:", sql);
+  console.log("SQL Values:", values);
   connection.query(sql, values, function (err, results) {
     if (err) {
       console.error("Error executing query:", err);
-      return res.status(500).send("An error occurred while executing the query.");
+      return res.status(500).render("error", {
+        message: "An error occurred while executing the query."
+      });
     }
 
     console.log("Query Results:", results);
     res.render("searchResults", {
-      title: "Search Results",
+      title: "Advanced Search Results",
       query: {
         title: title,
         author: author,
@@ -175,7 +179,6 @@ router.get("/searchAdvanced", function (req, res, next) {
         maxPrice: maxPrice
       },
       isAdvancedSearch: true,
-      // or false for basic search
       results: results
     });
   });

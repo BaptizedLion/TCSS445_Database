@@ -127,13 +127,13 @@ router.get("/searchAdvanced", function (req, res, next) {
       b.ISBN as isbn, 
       b.TITLE as title, 
       b.AUTHORID as authorId,
-      CONCAT(a.firstname, ' ', a.lastname) as authorName, 
+      CONCAT(a.FIRSTNAME, ' ', a.LASTNAME) as authorName, 
       b.PUBYEAR as pubYear, 
       b.PUBLISHER as publisher, 
       b.GENRE as genre, 
       b.BOOKCOST as bookCost 
     FROM books b
-    LEFT JOIN authors a ON b.AUTHORID = a.id
+    LEFT JOIN author a ON b.AUTHORID = a.AUTHORID
     WHERE 1=1
   `;
   const values = [];
@@ -144,8 +144,8 @@ router.get("/searchAdvanced", function (req, res, next) {
   }
 
   if (author) {
-    sql += ` AND (LOWER(CONCAT(a.firstname, ' ', a.lastname)) LIKE LOWER(?) OR LOWER(a.lastname) LIKE LOWER(?))`;
-    values.push(`%${author}%`, `%${author}%`);
+    sql += ` AND (LOWER(a.FIRSTNAME) LIKE LOWER(?) OR LOWER(a.LASTNAME) LIKE LOWER(?) OR LOWER(CONCAT(a.FIRSTNAME, ' ', a.LASTNAME)) LIKE LOWER(?))`;
+    values.push(`%${author}%`, `%${author}%`, `%${author}%`);
   }
 
   if (genre) {
@@ -163,6 +163,13 @@ router.get("/searchAdvanced", function (req, res, next) {
     values.push(parseFloat(maxPrice));
   }
 
+  console.log("Search parameters:", {
+    title,
+    author,
+    genre,
+    minPrice,
+    maxPrice,
+  });
   console.log("SQL Query:", sql);
   console.log("SQL Values:", values);
 
@@ -171,6 +178,10 @@ router.get("/searchAdvanced", function (req, res, next) {
       console.error("Error executing query:", err);
       return res.status(500).render("error", {
         message: "An error occurred while executing the query.",
+        error: {
+          status: 500,
+          stack: process.env.NODE_ENV === "development" ? err.stack : "",
+        },
       });
     }
     console.log("Query Results:", results);

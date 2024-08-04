@@ -130,7 +130,7 @@ router.get("/searchAdvanced", function (req, res, next) {
       genre = _req$query2.genre,
       minPrice = _req$query2.minPrice,
       maxPrice = _req$query2.maxPrice;
-  var sql = "\n    SELECT \n      b.ISBN as isbn, \n      b.TITLE as title, \n      b.AUTHORID as authorId,\n      CONCAT(a.firstname, ' ', a.lastname) as authorName, \n      b.PUBYEAR as pubYear, \n      b.PUBLISHER as publisher, \n      b.GENRE as genre, \n      b.BOOKCOST as bookCost \n    FROM books b\n    LEFT JOIN authors a ON b.AUTHORID = a.id\n    WHERE 1=1\n  ";
+  var sql = "\n    SELECT \n      b.ISBN as isbn, \n      b.TITLE as title, \n      b.AUTHORID as authorId,\n      CONCAT(a.FIRSTNAME, ' ', a.LASTNAME) as authorName, \n      b.PUBYEAR as pubYear, \n      b.PUBLISHER as publisher, \n      b.GENRE as genre, \n      b.BOOKCOST as bookCost \n    FROM books b\n    LEFT JOIN author a ON b.AUTHORID = a.AUTHORID\n    WHERE 1=1\n  ";
   var values = [];
 
   if (title) {
@@ -139,8 +139,8 @@ router.get("/searchAdvanced", function (req, res, next) {
   }
 
   if (author) {
-    sql += " AND (LOWER(CONCAT(a.firstname, ' ', a.lastname)) LIKE LOWER(?) OR LOWER(a.lastname) LIKE LOWER(?))";
-    values.push("%".concat(author, "%"), "%".concat(author, "%"));
+    sql += " AND (LOWER(a.FIRSTNAME) LIKE LOWER(?) OR LOWER(a.LASTNAME) LIKE LOWER(?) OR LOWER(CONCAT(a.FIRSTNAME, ' ', a.LASTNAME)) LIKE LOWER(?))";
+    values.push("%".concat(author, "%"), "%".concat(author, "%"), "%".concat(author, "%"));
   }
 
   if (genre) {
@@ -158,13 +158,24 @@ router.get("/searchAdvanced", function (req, res, next) {
     values.push(parseFloat(maxPrice));
   }
 
+  console.log("Search parameters:", {
+    title: title,
+    author: author,
+    genre: genre,
+    minPrice: minPrice,
+    maxPrice: maxPrice
+  });
   console.log("SQL Query:", sql);
   console.log("SQL Values:", values);
   connection.query(sql, values, function (err, results) {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).render("error", {
-        message: "An error occurred while executing the query."
+        message: "An error occurred while executing the query.",
+        error: {
+          status: 500,
+          stack: process.env.NODE_ENV === "development" ? err.stack : ""
+        }
       });
     }
 

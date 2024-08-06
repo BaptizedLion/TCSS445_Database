@@ -50,6 +50,18 @@ body {
   margin-left: 1%;
 }
 
+.btn4 {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  font-family: Arial;
+  margin-left: 1%;
+}
+
 .btn1:hover {
   border-left: 3px solid red;
 }
@@ -60,6 +72,10 @@ body {
 
 .btn3:hover {
   border-left: 3px solid yellow;
+}
+
+.btn4:hover {
+  border-left: 3px solid green;
 }
 
 /* the below css is for the bookFind.pug file */

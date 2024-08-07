@@ -93,7 +93,7 @@ app.get("/authors/add", function (req, res) {
 
 app.get("/members", function (req, res) {
   res.render("members", {
-    title: "members"
+    title: "Library Members"
   });
 });
 app.use(logger("dev"));
@@ -108,7 +108,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/books", booksRouter);
 app.use("/authors", authorsRouter);
-app.use("/members", membersRouter); // catch 404 and forward to error handler
+app.use("/", membersRouter); // catch 404 and forward to error handler
 
 app.use(function (req, res, next) {
   next(createError(404));

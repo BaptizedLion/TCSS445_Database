@@ -22,8 +22,13 @@ router.get("/searchMembers", function (req, res, next) {
       isbn = _req$query.isbn,
       title = _req$query.title,
       duedate = _req$query.duedate;
-  var sql = "\n    SELECT memberid, fname, lname, isbn, duedate\n    FROM librarymembers \n    JOIN bookcheckouts USING (memberid)\n    WHERE DUEDATE > '2023-07-25'\n  ";
+  var sql = "\n    SELECT librarymembers.memberid, fname, lname, bookcheckouts.isbn, books.title, duedate\n    FROM librarymembers\n    JOIN bookcheckouts USING (memberid)\n    JOIN books ON bookcheckouts.isbn = books.isbn\n    WHERE 1=1\n  ";
   var values = [];
+
+  if (duedate) {
+    sql += " AND DUEDATE > ?";
+    values.push(duedate);
+  }
 
   if (memberid) {
     sql += " AND LOWER(librarymembers.memberid) LIKE LOWER(?)";
@@ -31,12 +36,12 @@ router.get("/searchMembers", function (req, res, next) {
   }
 
   if (fname) {
-    sql += " AND LOWER(librarymembers.fname) LIKE LOWER(?)";
+    sql += " AND LOWER(fname) LIKE LOWER(?)";
     values.push("%".concat(fname, "%"));
   }
 
   if (lname) {
-    sql += " AND LOWER(librarymembers.lname) LIKE LOWER(?)";
+    sql += " AND LOWER(lname) LIKE LOWER(?)";
     values.push("%".concat(lname, "%"));
   }
 
@@ -46,15 +51,9 @@ router.get("/searchMembers", function (req, res, next) {
   }
 
   if (title) {
-    sql += " AND LOWER(bookcheckouts.title) LIKE LOWER(?)";
+    sql += " AND LOWER(books.title) LIKE LOWER(?)";
     values.push("%".concat(title, "%"));
   }
-
-  if (duedate) {
-    sql += " AND LOWER(bookcheckouts.duedate) LIKE LOWER(?)";
-    values.push("%".concat(duedate, "%"));
-  } // Log the final SQL query and values
-
 
   console.log("SQL Query:", sql);
   console.log("Values:", values);
@@ -65,13 +64,8 @@ router.get("/searchMembers", function (req, res, next) {
     }
 
     console.log("Query Results:", results);
-
-    if (results.length === 0) {
-      return res.send("No results found.");
-    }
-
     res.render("memberResults", {
-      title: "Member Results",
+      title: "Member Search Results",
       query: req.query,
       results: results
     });

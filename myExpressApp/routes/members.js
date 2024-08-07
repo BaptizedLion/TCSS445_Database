@@ -13,44 +13,39 @@ const connection = mysql.createConnection({
 router.get("/searchMembers", function (req, res, next) {
   const { memberid, fname, lname, isbn, title, duedate } = req.query;
   let sql = `
-    SELECT memberid, fname, lname, isbn, duedate
-    FROM librarymembers 
+    SELECT librarymembers.memberid, fname, lname, bookcheckouts.isbn, books.title, duedate
+    FROM librarymembers
     JOIN bookcheckouts USING (memberid)
-    WHERE DUEDATE > '2023-07-25'
+    JOIN books ON bookcheckouts.isbn = books.isbn
+    WHERE 1=1
   `;
   const values = [];
 
+  if (duedate) {
+    sql += ` AND DUEDATE > ?`;
+    values.push(duedate);
+  }
   if (memberid) {
     sql += ` AND LOWER(librarymembers.memberid) LIKE LOWER(?)`;
     values.push(`%${memberid}%`);
   }
-
   if (fname) {
-    sql += ` AND LOWER(librarymembers.fname) LIKE LOWER(?)`;
+    sql += ` AND LOWER(fname) LIKE LOWER(?)`;
     values.push(`%${fname}%`);
   }
-
   if (lname) {
-    sql += ` AND LOWER(librarymembers.lname) LIKE LOWER(?)`;
+    sql += ` AND LOWER(lname) LIKE LOWER(?)`;
     values.push(`%${lname}%`);
   }
-
   if (isbn) {
     sql += ` AND LOWER(bookcheckouts.isbn) LIKE LOWER(?)`;
     values.push(`%${isbn}%`);
   }
-
   if (title) {
-    sql += ` AND LOWER(bookcheckouts.title) LIKE LOWER(?)`;
+    sql += ` AND LOWER(books.title) LIKE LOWER(?)`;
     values.push(`%${title}%`);
   }
 
-  if (duedate) {
-    sql += ` AND LOWER(bookcheckouts.duedate) LIKE LOWER(?)`;
-    values.push(`%${duedate}%`);
-  }
-
-  // Log the final SQL query and values
   console.log("SQL Query:", sql);
   console.log("Values:", values);
 
@@ -62,19 +57,12 @@ router.get("/searchMembers", function (req, res, next) {
         .send("An error occurred while executing the query.");
     }
     console.log("Query Results:", results);
-
-    if (results.length === 0) {
-      return res.send("No results found.");
-    }
-
     res.render("memberResults", {
-      title: "Member Results",
+      title: "Member Search Results",
       query: req.query,
       results: results,
     });
   });
 });
-
-
 
 module.exports = router;

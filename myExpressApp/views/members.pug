@@ -1,18 +1,23 @@
 extends layout
-
 block content
   h1= title
-  form(action="/members" method="GET")
+  form(action="/searchMembers" method="GET")
     div.form-group
-      label(for="MEMBERID") Member ID:
-      input(type="text" id="memberid" name="memberid" placeholder="Enter member ID ")
-
+      label(for="memberid") Member ID:
+      input(type="text" id="memberid" name="memberid" placeholder="Enter member ID")
     div.form-group
-      label(for="FNAME") First Name:
+      label(for="fname") First Name:
       input(type="text" id="fname" name="fname" placeholder="Enter first name")
-
     div.form-group
-      label(for="FNAME") Last Name:
+      label(for="lname") Last Name:
       input(type="text" id="lname" name="lname" placeholder="Enter last name")
-
+    div.form-group
+      label(for="isbn") ISBN:
+      input(type="text" id="isbn" name="isbn" placeholder="Enter ISBN")
+    div.form-group
+      label(for="title") Book Title:
+      input(type="text" id="title" name="title" placeholder="Enter book title")
+    div.form-group
+      label(for="duedate") Due Date After:
+      input(type="date" id="duedate" name="duedate")
     button(type="submit") Search

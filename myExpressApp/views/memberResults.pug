@@ -1,0 +1,43 @@
+extends layout
+block content
+  h1= title
+  if query
+    p Member Search:
+    ul
+      if query.memberid
+        li Member ID: #{query.memberid}
+      if query.fname
+        li First Name: #{query.fname}
+      if query.lname
+        li Last Name: #{query.lname}
+      if query.isbn
+        li ISBN: #{query.isbn}
+      if query.title
+        li Book Title: #{query.title}
+      if query.duedate
+        li Due Date After: #{query.duedate}
+  else
+    p You searched for: All members
+
+  if results && results.length
+    p Found #{results.length} results
+    table
+      thead
+        tr
+          th Member ID
+          th First Name
+          th Last Name
+          th ISBN
+          th Book Title
+          th Due Date
+      tbody
+        each result in results
+          tr
+            td= result.memberid
+            td= result.fname
+            td= result.lname
+            td= result.isbn
+            td= result.title
+            td= result.duedate.toLocaleDateString()
+  else
+    p No results found.

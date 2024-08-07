@@ -25,20 +25,20 @@ router.get("/add", (req, res) => {
   });
 });
 
-// POST route for handling form submission
-router.post("/add", (req, res) => {
-  const { title, author_id, description } = req.body;
+// // POST route for handling form submission
+// router.post("/add", (req, res) => {
+//   const { title, author_id, description } = req.body;
 
-  const query =
-    "INSERT INTO books (title, author_id, description) VALUES (?, ?, ?)";
-  connection.query(query, [title, author_id, description], (err, result) => {
-    if (err) {
-      console.error("Error adding book:", err);
-      return res.status(500).render("error", { message: "Error adding book" });
-    }
-    res.redirect("/books"); // Redirect to book list
-  });
-});
+//   const query =
+//     "INSERT INTO books (title, author_id, description) VALUES (?, ?, ?)";
+//   connection.query(query, [title, author_id, description], (err, result) => {
+//     if (err) {
+//       console.error("Error adding book:", err);
+//       return res.status(500).render("error", { message: "Error adding book" });
+//     }
+//     res.redirect("/books"); // Redirect to book list
+//   });
+// });
 
 //get for findBook
 router.get("/find", function (req, res, next) {

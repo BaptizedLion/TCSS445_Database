@@ -1,10 +1,8 @@
 const createError = require("http-errors");
 const express = require("express");
-const router = express.Router();
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-console.log("Authors router loaded");
 
 const authorsRouter = require("./routes/authors");
 const indexRouter = require("./routes/index");
@@ -23,33 +21,6 @@ const mysql = require("mysql");
 //changed PORT from 3000 to 3001 because 3000 was taken
 const PORT = 3001;
 
-// add route
-app.get("/books/add", function (req, res) {
-  res.render("add_book", {
-    title: "Add Book",
-  });
-});
-
-// add route for find book
-app.get("/books/find", function (req, res) {
-  res.render("bookFind", {
-    title: "Find Book",
-  });
-});
-
-//add route for add authors
-app.get("/authors/add", function (req, res) {
-  res.render("authoradd", {
-    title: "Add author",
-  });
-});
-
-//add route for members
-app.get("/members", function (req, res) {
-  res.render("members", {
-    title: "members",
-  });
-});
 //creating a connection to mysql database
 const connection = mysql.createConnection({
   host: "localhost",
@@ -58,11 +29,11 @@ const connection = mysql.createConnection({
   database: "library_test",
 });
 
-//open the mySQL connection
+//open the MySQL connection
 connection.connect((error) => {
   if (error) {
     console.log(
-      "A error has occurred" + "while attempting to connect to database"
+      "An error has occurred while attempting to connect to the database"
     );
     throw error;
   }
@@ -70,20 +41,20 @@ connection.connect((error) => {
   //if no error, proceed to express server
   app.listen(PORT, () => {
     console.log(
-      "Database connection is ready and" + "Server is listening on Port",
+      "Database connection is ready and Server is listening on Port",
       PORT
     );
   });
 });
 
-//fetch data from database 8/1/2024
+// Log the query to ensure data is fetched correctly
 connection.query("SELECT * FROM Books", (err, results, fields) => {
   if (err) throw err;
   console.log(results);
 });
 
 // Route to handle search queries
-router.get("/search", function (req, res, next) {
+app.get("/search", function (req, res, next) {
   const searchQuery = req.query.query;
   const sql = `
     SELECT 
@@ -115,20 +86,46 @@ router.get("/search", function (req, res, next) {
   });
 });
 
+// add route
+app.get("/books/add", function (req, res) {
+  res.render("add_book", {
+    title: "Add Book",
+  });
+});
+
+// add route for find book
+app.get("/books/find", function (req, res) {
+  res.render("bookFind", {
+    title: "Find Book",
+  });
+});
+
+//add route for add authors
+app.get("/authors/add", function (req, res) {
+  res.render("authoradd", {
+    title: "Add author",
+  });
+});
+
+//add route for members
+app.get("/members", function (req, res) {
+  res.render("members", {
+    title: "members",
+  });
+});
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static("css"));
-app.use(express.static("public"));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/books", booksRouter);
 app.use("/authors", authorsRouter);
-
-app.use("/authors", authorsRouter);
+app.use("/members", membersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

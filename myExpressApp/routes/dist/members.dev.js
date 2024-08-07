@@ -53,8 +53,11 @@ router.get("/searchMembers", function (req, res, next) {
   if (duedate) {
     sql += " AND LOWER(bookcheckouts.duedate) LIKE LOWER(?)";
     values.push("%".concat(duedate, "%"));
-  }
+  } // Log the final SQL query and values
 
+
+  console.log("SQL Query:", sql);
+  console.log("Values:", values);
   connection.query(sql, values, function (err, results) {
     if (err) {
       console.error("Error executing query:", err);
@@ -62,8 +65,13 @@ router.get("/searchMembers", function (req, res, next) {
     }
 
     console.log("Query Results:", results);
-    res.render("searchResults", {
-      title: "Search Results",
+
+    if (results.length === 0) {
+      return res.send("No results found.");
+    }
+
+    res.render("memberResults", {
+      title: "Member Results",
       query: req.query,
       results: results
     });

@@ -50,6 +50,10 @@ router.get("/searchMembers", function (req, res, next) {
     values.push(`%${duedate}%`);
   }
 
+  // Log the final SQL query and values
+  console.log("SQL Query:", sql);
+  console.log("Values:", values);
+
   connection.query(sql, values, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
@@ -58,12 +62,19 @@ router.get("/searchMembers", function (req, res, next) {
         .send("An error occurred while executing the query.");
     }
     console.log("Query Results:", results);
-    res.render("searchResults", {
-      title: "Search Results",
+
+    if (results.length === 0) {
+      return res.send("No results found.");
+    }
+
+    res.render("memberResults", {
+      title: "Member Results",
       query: req.query,
       results: results,
     });
   });
 });
+
+
 
 module.exports = router;

@@ -22,7 +22,12 @@ var usersRouter = require("./routes/users");
 
 var booksRouter = require("./routes/books");
 
-var app = express(); //added variables michael
+var membersRouter = require("./routes/members");
+
+var app = express(); // view engine setup
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug"); //added variables michael
 
 var mysql = require("mysql"); //changed PORT from 3000 to 3001 because 3000 was taken
 
@@ -44,6 +49,12 @@ app.get("/books/find", function (req, res) {
 app.get("/authors/add", function (req, res) {
   res.render("authoradd", {
     title: "Add author"
+  });
+}); //add route for members
+
+app.get("/members", function (req, res) {
+  res.render("members", {
+    title: "members"
   });
 }); //creating a connection to mysql database
 
@@ -88,10 +99,7 @@ router.get("/search", function (req, res, next) {
       results: results
     });
   });
-}); // view engine setup
-
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+});
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({

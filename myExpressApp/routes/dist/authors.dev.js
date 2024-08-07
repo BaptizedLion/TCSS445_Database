@@ -2,9 +2,7 @@
 
 var express = require("express");
 
-var router = express.Router();
-
-var Author = require("../models/author");
+var router = express.Router(); //const Author = require("../models/author");
 
 var mysql = require("mysql");
 

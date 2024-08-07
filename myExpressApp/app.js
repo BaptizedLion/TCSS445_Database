@@ -5,13 +5,18 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 console.log("Authors router loaded");
-const authorsRouter = require("./routes/authors");
 
+const authorsRouter = require("./routes/authors");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const booksRouter = require("./routes/books");
+const membersRouter = require("./routes/members");
 
 const app = express();
+
+// view engine setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
 //added variables michael
 const mysql = require("mysql");
@@ -39,6 +44,12 @@ app.get("/authors/add", function (req, res) {
   });
 });
 
+//add route for members
+app.get("/members", function (req, res) {
+  res.render("members", {
+    title: "members",
+  });
+});
 //creating a connection to mysql database
 const connection = mysql.createConnection({
   host: "localhost",
@@ -103,10 +114,6 @@ router.get("/search", function (req, res, next) {
     });
   });
 });
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
 
 app.use(logger("dev"));
 app.use(express.json());

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1 Add New Author
+  form(action="/authors/add" method="POST")
+    div.form-group
+      label(for="authorId") Author ID:
+      input(type="number" id="authorId" name="authorId" required min="100000" max="999999")
+    
+    div.form-group
+      label(for="firstName") First Name:
+      input(type="text" id="firstName" name="firstName" required)
+    
+    div.form-group
+      label(for="lastName") Last Name:
+      input(type="text" id="lastName" name="lastName" required)
+    
+    div.form-group
+      label(for="birthDate") Birth Date:
+      input(type="date" id="birthDate" name="birthDate")
+    
+    button(type="submit") Add Author

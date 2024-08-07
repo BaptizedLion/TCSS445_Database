@@ -12,6 +12,10 @@ var cookieParser = require("cookie-parser");
 
 var logger = require("morgan");
 
+console.log("Authors router loaded");
+
+var authorsRouter = require("./routes/authors");
+
 var indexRouter = require("./routes/index");
 
 var usersRouter = require("./routes/users");
@@ -34,6 +38,12 @@ app.get("/books/add", function (req, res) {
 app.get("/books/find", function (req, res) {
   res.render("bookFind", {
     title: "Find Book"
+  });
+}); //add route for add authors
+
+app.get("/authors/add", function (req, res) {
+  res.render("authoradd", {
+    title: "Add author"
   });
 }); //creating a connection to mysql database
 
@@ -93,7 +103,9 @@ app.use(express["static"]("css"));
 app.use(express["static"]("public"));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/books", booksRouter); // catch 404 and forward to error handler
+app.use("/books", booksRouter);
+app.use("/authors", authorsRouter);
+app.use("/authors", authorsRouter); // catch 404 and forward to error handler
 
 app.use(function (req, res, next) {
   next(createError(404));

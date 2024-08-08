@@ -44,7 +44,7 @@ connection.connect(function (error) {
   } //if no error, proceed to express server
 
 
-  app.listen(PORT, function () {
+  app.listen(process.env.PORT || PORT, function () {
     console.log("Database connection is ready and Server is listening on Port", PORT);
   });
 }); // Log the query to ensure data is fetched correctly

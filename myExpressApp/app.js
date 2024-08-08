@@ -39,7 +39,7 @@ connection.connect((error) => {
   }
 
   //if no error, proceed to express server
-  app.listen(PORT, () => {
+  app.listen(process.env.PORT || PORT, () => {
     console.log(
       "Database connection is ready and Server is listening on Port",
       PORT

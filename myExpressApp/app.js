@@ -26,7 +26,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "library_test",
+  database: "library_test2",
 });
 
 //open the MySQL connection
@@ -64,7 +64,8 @@ app.get("/search", function (req, res, next) {
       PUBYEAR as pubYear, 
       PUBLISHER as publisher, 
       GENRE as genre, 
-      BOOKCOST as bookCost 
+      BOOKCOST as bookCost,
+      RATING as rating 
     FROM books 
     WHERE LOWER(TITLE) LIKE LOWER(?)
   `;

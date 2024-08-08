@@ -34,7 +34,7 @@ var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "library_test"
+  database: "library_test2"
 }); //open the MySQL connection
 
 connection.connect(function (error) {
@@ -56,7 +56,7 @@ connection.query("SELECT * FROM Books", function (err, results, fields) {
 
 app.get("/search", function (req, res, next) {
   var searchQuery = req.query.query;
-  var sql = "\n    SELECT \n      ISBN as isbn, \n      TITLE as title, \n      AUTHORID as authorId, \n      PUBYEAR as pubYear, \n      PUBLISHER as publisher, \n      GENRE as genre, \n      BOOKCOST as bookCost \n    FROM books \n    WHERE LOWER(TITLE) LIKE LOWER(?)\n  ";
+  var sql = "\n    SELECT \n      ISBN as isbn, \n      TITLE as title, \n      AUTHORID as authorId, \n      PUBYEAR as pubYear, \n      PUBLISHER as publisher, \n      GENRE as genre, \n      BOOKCOST as bookCost,\n      RATING as rating \n    FROM books \n    WHERE LOWER(TITLE) LIKE LOWER(?)\n  ";
   var values = ["%".concat(searchQuery, "%")];
   connection.query(sql, values, function (err, results) {
     if (err) {

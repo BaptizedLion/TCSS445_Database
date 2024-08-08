@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "library_test",
+  database: "library_test2",
 });
 
 // GET route for displaying all authors

@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "library_test"
+  database: "library_test2"
 });
 router.get("/add", function (req, res) {
   connection.query("SELECT id, name FROM authors", function (err, authors) {
@@ -66,8 +66,9 @@ router.get("/search", function (req, res, next) {
       author = _req$query.author,
       genre = _req$query.genre,
       minPrice = _req$query.minPrice,
-      maxPrice = _req$query.maxPrice;
-  var sql = "\n    SELECT \n      ISBN as isbn, \n      TITLE as title, \n      AUTHORID as authorId, \n      PUBYEAR as pubYear, \n      PUBLISHER as publisher, \n      GENRE as genre, \n      BOOKCOST as bookCost \n    FROM books \n    WHERE 1=1\n  ";
+      maxPrice = _req$query.maxPrice,
+      rating = _req$query.rating;
+  var sql = "\n    SELECT \n      ISBN as isbn, \n      TITLE as title, \n      AUTHORID as authorId, \n      PUBYEAR as pubYear, \n      PUBLISHER as publisher, \n      GENRE as genre, \n      BOOKCOST as bookCost,\n      RATING as rating \n    FROM books \n    WHERE 1=1\n  ";
   var values = [];
 
   if (title) {
@@ -93,6 +94,11 @@ router.get("/search", function (req, res, next) {
   if (maxPrice) {
     sql += " AND BOOKCOST <= ?";
     values.push(parseFloat(maxPrice));
+  }
+
+  if (rating) {
+    sql += " AND RATING >= ?";
+    values.push(rating);
   }
 
   connection.query(sql, values, function (err, results) {
@@ -124,8 +130,9 @@ router.get("/searchAdvanced", function (req, res, next) {
       author = _req$query2.author,
       genre = _req$query2.genre,
       minPrice = _req$query2.minPrice,
-      maxPrice = _req$query2.maxPrice;
-  var sql = "\n    SELECT \n      b.ISBN as isbn, \n      b.TITLE as title, \n      b.AUTHORID as authorId,\n      CONCAT(a.FIRSTNAME, ' ', a.LASTNAME) as authorName, \n      b.PUBYEAR as pubYear, \n      b.PUBLISHER as publisher, \n      b.GENRE as genre, \n      b.BOOKCOST as bookCost \n    FROM books b\n    LEFT JOIN author a ON b.AUTHORID = a.AUTHORID\n    WHERE 1=1\n  ";
+      maxPrice = _req$query2.maxPrice,
+      rating = _req$query2.rating;
+  var sql = "\n    SELECT \n      b.ISBN as isbn, \n      b.TITLE as title, \n      b.AUTHORID as authorId,\n      CONCAT(a.FIRSTNAME, ' ', a.LASTNAME) as authorName, \n      b.PUBYEAR as pubYear, \n      b.PUBLISHER as publisher, \n      b.GENRE as genre, \n      b.BOOKCOST as bookCost,\n      b.RATING as rating \n    FROM books b\n    LEFT JOIN author a ON b.AUTHORID = a.AUTHORID\n    WHERE 1=1\n  ";
   var values = [];
 
   if (title) {
@@ -153,12 +160,18 @@ router.get("/searchAdvanced", function (req, res, next) {
     values.push(parseFloat(maxPrice));
   }
 
+  if (rating) {
+    sql += " AND b.RATING >= ?";
+    values.push(rating);
+  }
+
   console.log("Search parameters:", {
     title: title,
     author: author,
     genre: genre,
     minPrice: minPrice,
-    maxPrice: maxPrice
+    maxPrice: maxPrice,
+    rating: rating
   });
   console.log("SQL Query:", sql);
   console.log("SQL Values:", values);

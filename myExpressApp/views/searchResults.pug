@@ -14,6 +14,8 @@ block content
         li Minimum Price: $#{query.minPrice}
       if query.maxPrice
         li Maximum Price: $#{query.maxPrice}
+      if query.rating
+        li Book Rating: $#{query.rating}
   else
     p You searched for: #{query.title || "All books"}
 
@@ -29,6 +31,7 @@ block content
           th Publisher
           th Genre
           th Book Cost
+          th Rating
       tbody
         each book in results
           tr
@@ -39,5 +42,6 @@ block content
             td= book.publisher || book.PUBLISHER
             td= book.genre || book.GENRE
             td= (book.bookCost || book.BOOKCOST) ? `$${(book.bookCost || book.BOOKCOST).toFixed(2)}` : 'N/A'
+            td= book.rating || book.RATING
   else
     p No results found.

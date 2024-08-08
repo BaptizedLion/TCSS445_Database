@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "library_test"
+  database: "library_test2"
 }); // Route to handle search query for members who have books checked out
 
 router.get("/searchMembers", function (req, res, next) {

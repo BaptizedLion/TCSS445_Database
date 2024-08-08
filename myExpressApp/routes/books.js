@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "library_test",
+  database: "library_test2",
 });
 
 router.get("/add", (req, res) => {
@@ -59,7 +59,7 @@ router.get("/advancedFind", function (req, res, next) {
 
 //search route for findBook
 router.get("/search", function (req, res, next) {
-  const { title, author, genre, minPrice, maxPrice } = req.query;
+  const { title, author, genre, minPrice, maxPrice, rating } = req.query;
 
   let sql = `
     SELECT 
@@ -69,7 +69,8 @@ router.get("/search", function (req, res, next) {
       PUBYEAR as pubYear, 
       PUBLISHER as publisher, 
       GENRE as genre, 
-      BOOKCOST as bookCost 
+      BOOKCOST as bookCost,
+      RATING as rating 
     FROM books 
     WHERE 1=1
   `;
@@ -100,6 +101,11 @@ router.get("/search", function (req, res, next) {
     values.push(parseFloat(maxPrice));
   }
 
+  if (rating) {
+    sql += ` AND RATING >= ?`;
+    values.push(rating);
+  }
+
   connection.query(sql, values, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
@@ -120,7 +126,7 @@ router.get("/search", function (req, res, next) {
 //search route for advancedFind
 
 router.get("/searchAdvanced", function (req, res, next) {
-  const { title, author, genre, minPrice, maxPrice } = req.query;
+  const { title, author, genre, minPrice, maxPrice, rating } = req.query;
 
   let sql = `
     SELECT 
@@ -131,7 +137,8 @@ router.get("/searchAdvanced", function (req, res, next) {
       b.PUBYEAR as pubYear, 
       b.PUBLISHER as publisher, 
       b.GENRE as genre, 
-      b.BOOKCOST as bookCost 
+      b.BOOKCOST as bookCost,
+      b.RATING as rating 
     FROM books b
     LEFT JOIN author a ON b.AUTHORID = a.AUTHORID
     WHERE 1=1
@@ -163,12 +170,18 @@ router.get("/searchAdvanced", function (req, res, next) {
     values.push(parseFloat(maxPrice));
   }
 
+  if (rating) {
+    sql += ` AND b.RATING >= ?`;
+    values.push(rating);
+  }
+
   console.log("Search parameters:", {
     title,
     author,
     genre,
     minPrice,
     maxPrice,
+    rating,
   });
   console.log("SQL Query:", sql);
   console.log("SQL Values:", values);

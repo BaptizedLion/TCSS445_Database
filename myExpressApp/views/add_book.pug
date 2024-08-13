@@ -1,7 +1,10 @@
 extends layout
-
 block content
   h1= title
+
+  if success
+    p.success-message Book added successfully!
+
   form(action="/books/add" method="POST")
     div.form-group
       label(for="isbn") ISBN:
@@ -13,11 +16,11 @@ block content
     
     div.form-group
       label(for="authorID") Author ID: 
-      input(type="text" id="author" name="author" placeholder="Enter author ID (Author ID Must Exist Prior to Creating New ID)" required)
+      input(type="number" id="authorid" name="authorid" placeholder="Enter author ID (Author ID Must Exist Prior to Creating New ID)" required)
 
     div.form-group
-      label(for="pubYear") Year Published:
-      input(type="text" id="pubYear" name="pubYear" placeholder="Enter Year Published" required)
+      label(for="pubyear") Year Published:
+      input(type="number" id="pubyear" name="pubyear" placeholder="Enter Year Published" required)
 
     div.form-group
       label(for="publisher") Publisher:
@@ -62,7 +65,12 @@ block content
         option(value="Young Adult Fantasy") Young Adult Fantasy
     
     div.form-group
-      label(for="price") Price:
-      input(type="number" id="price" name="price" min="0" step="0.01" placeholder="0.00" required)
+      label(for="bookcost") Price:
+      input(type="number" id="bookcost" name="bookcost" min="0" step="0.01" placeholder="0.00" required)
+
+    div.form-group
+      label(for="rating") Rating:
+      input(type="text" id="rating" name="rating" placeholder="Enter rating" required)
     
     button(type="submit") Add Book
+    

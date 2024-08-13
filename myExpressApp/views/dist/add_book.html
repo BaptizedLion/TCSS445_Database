@@ -18,11 +18,11 @@
       </div>
       <div class="form-group">
         <label for="authorID">Author ID: </label>
-        <input type="text" id="author" name="author" placeholder="Enter author ID (Author ID Must Exist Prior to Creating New ID)" required>
+        <input type="number" id="authorid" name="authorid" placeholder="Enter author ID (Author ID Must Exist Prior to Creating New ID)" required>
       </div>
       <div class="form-group">
-        <label for="pubYear">Year Published:</label>
-        <input type="text" id="pubYear" name="pubYear" placeholder="Enter Year Published" required>
+        <label for="pubyear">Year Published:</label>
+        <input type="number" id="pubyear" name="pubyear" placeholder="Enter Year Published" required>
       </div>
       <div class="form-group">
         <label for="publisher">Publisher:</label>
@@ -68,8 +68,12 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" min="0" step="0.01" placeholder="0.00" required>
+        <label for="bookcost">Price:</label>
+        <input type="number" id="bookcost" name="bookcost" min="0" step="0.01" placeholder="0.00" required>
+      </div>
+      <div class="form-group">
+        <label for="rating">Rating:</label>
+        <input type="text" id="rating" name="rating" placeholder="Enter rating" required>
       </div>
       <button type="submit">Add Book</button>
     </form><br>

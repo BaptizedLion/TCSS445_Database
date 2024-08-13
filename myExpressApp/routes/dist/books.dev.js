@@ -24,23 +24,52 @@ router.get("/add", function (req, res) {
 
     res.render("add_book", {
       title: "Add New Book",
-      authors: authors
+      authors: authors,
+      success: req.query.success
     });
   });
 }); // // POST route for handling form submission
-// router.post("/add", (req, res) => {
-//   const { title, author_id, description } = req.body;
-//   const query =
-//     "INSERT INTO books (title, author_id, description) VALUES (?, ?, ?)";
-//   connection.query(query, [title, author_id, description], (err, result) => {
-//     if (err) {
-//       console.error("Error adding book:", err);
-//       return res.status(500).render("error", { message: "Error adding book" });
-//     }
-//     res.redirect("/books"); // Redirect to book list
-//   });
-// });
-//get for findBook
+
+router.post("/add", function (req, res) {
+  var _req$body = req.body,
+      isbn = _req$body.isbn,
+      title = _req$body.title,
+      authorid = _req$body.authorid,
+      pubyear = _req$body.pubyear,
+      publisher = _req$body.publisher,
+      genre = _req$body.genre,
+      bookcost = _req$body.bookcost,
+      rating = _req$body.rating;
+  console.log("Received author ID:", authorid); // First, check if the author exists
+
+  connection.query("SELECT * FROM author WHERE authorid = ?", [authorid], function (err, results) {
+    if (err) {
+      console.error("Error checking author:", err);
+      return res.status(500).render("error", {
+        message: "Error checking author"
+      });
+    }
+
+    if (results.length === 0) {
+      return res.status(400).render("error", {
+        message: "Invalid author ID. Author does not exist."
+      });
+    } // If author exists, proceed with book insertion
+
+
+    var query = "INSERT INTO books (isbn, title, authorid, pubyear, publisher, genre, bookcost, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    connection.query(query, [isbn, title, authorid, pubyear, publisher, genre, bookcost, rating], function (err, result) {
+      if (err) {
+        console.error("Error adding book:", err);
+        return res.status(500).render("error", {
+          message: "Error adding book"
+        });
+      }
+
+      res.redirect("/books/add?success=true"); // Redirect to book list
+    });
+  });
+}); //get for findBook
 
 router.get("/find", function (req, res, next) {
   res.render("findBook", {

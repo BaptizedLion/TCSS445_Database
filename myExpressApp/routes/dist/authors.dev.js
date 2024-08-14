@@ -36,7 +36,7 @@ router.post("/add", function (req, res) {
       });
     }
 
-    res.redirect("/author/add?success=true"); // Redirect back to the add form with success parameter
+    res.redirect("/authors/add?success=true"); // Redirect back to the add form with success parameter
   });
 }); // GET route
 

@@ -35,7 +35,7 @@ router.post("/add", (req, res) => {
           .status(500)
           .render("authors/add", { error: "Error adding author" });
       }
-      res.redirect("/author/add?success=true"); // Redirect back to the add form with success parameter
+      res.redirect("/authors/add?success=true"); // Redirect back to the add form with success parameter
     }
   );
 });

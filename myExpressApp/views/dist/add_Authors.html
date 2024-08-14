@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+  </head>
+  <body>
+    <header><a href="http://localhost:3001/"><img class="logo" src="/images/bibliopedia.png" alt="Team Logo" style="width:25%; height:25%;"></a></header>
+    <h1>Add New Author</h1>
+    <form action="/authors/add" method="POST">
+      <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required>
+      </div>
+      <div class="form-group">
+        <label for="authorID">Author ID:</label>
+        <input type="number" id="authorID" name="authorID" required min="10000" max="999999">
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Birth Date:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth">
+      </div>
+      <div class="form-group"> 
+        <label for="phoneNumber">Phone Number: </label>
+        <input type="text" id="phoneNumber" name="phoneNumber">
+      </div>
+      <div class="form-group"> 
+        <label for="booksWritten">Books Written:</label>
+        <input type="booksWritten" id="booksWritten" name="booksWritten">
+      </div>
+      <button type="submit">Add Author</button>
+    </form><br>
+    <hr>
+    <footer>
+      <p>Copyright &copy; 2024</p>
+    </footer>
+  </body>
+</html>

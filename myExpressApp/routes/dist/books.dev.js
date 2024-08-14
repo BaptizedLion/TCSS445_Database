@@ -39,7 +39,8 @@ router.post("/add", function (req, res) {
       publisher = _req$body.publisher,
       genre = _req$body.genre,
       bookcost = _req$body.bookcost,
-      rating = _req$body.rating;
+      rating = _req$body.rating; // const coverUrl = await fetchBookCover(isbn);
+
   console.log("Received author ID:", authorid); // First, check if the author exists
 
   connection.query("SELECT * FROM author WHERE authorid = ?", [authorid], function (err, results) {

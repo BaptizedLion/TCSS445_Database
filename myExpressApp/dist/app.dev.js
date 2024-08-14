@@ -10,6 +10,9 @@ var cookieParser = require("cookie-parser");
 
 var logger = require("morgan");
 
+var axios = require("axios"); //started using axios 8/13
+
+
 var authorsRouter = require("./routes/authors");
 
 var indexRouter = require("./routes/index");
@@ -52,7 +55,52 @@ connection.connect(function (error) {
 connection.query("SELECT * FROM Books", function (err, results, fields) {
   if (err) throw err;
   console.log(results);
-}); // Route to handle search queries
+}); //axios function to fetch book covers
+
+function fetchBookCover(isbn) {
+  var baseUrl, size, response;
+  return regeneratorRuntime.async(function fetchBookCover$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          baseUrl = "https://covers.openlibrary.org/b/isbn/";
+          size = "S";
+          _context.prev = 2;
+          _context.next = 5;
+          return regeneratorRuntime.awrap(axios.head("".concat(baseUrl).concat(isbn, "-").concat(size, ".jpg")));
+
+        case 5:
+          response = _context.sent;
+
+          if (!(response.status === 200)) {
+            _context.next = 10;
+            break;
+          }
+
+          return _context.abrupt("return", "".concat(baseUrl).concat(isbn, "-").concat(size, ".jpg"));
+
+        case 10:
+          console.log("No cover found for ISBN: ".concat(isbn));
+          return _context.abrupt("return", null);
+
+        case 12:
+          _context.next = 18;
+          break;
+
+        case 14:
+          _context.prev = 14;
+          _context.t0 = _context["catch"](2);
+          console.error("Error fetching book cover:", _context.t0);
+          return _context.abrupt("return", null);
+
+        case 18:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, null, null, [[2, 14]]);
+} // Route to handle search queries
+
 
 app.get("/search", function (req, res, next) {
   var searchQuery = req.query.query;
@@ -86,7 +134,7 @@ app.get("/books/find", function (req, res) {
 }); //add route for add authors
 
 app.get("/authors/add", function (req, res) {
-  res.render("authoradd", {
+  res.render("add_Authors", {
     title: "Add author"
   });
 }); //add route for members

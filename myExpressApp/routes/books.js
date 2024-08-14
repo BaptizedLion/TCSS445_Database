@@ -30,6 +30,8 @@ router.post("/add", (req, res) => {
   const { isbn, title, authorid, pubyear, publisher, genre, bookcost, rating } =
     req.body;
 
+  // const coverUrl = await fetchBookCover(isbn);
+
   console.log("Received author ID:", authorid);
   // First, check if the author exists
   connection.query(

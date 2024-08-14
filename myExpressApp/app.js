@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const axios = require("axios"); //started using axios 8/13
 
 const authorsRouter = require("./routes/authors");
 const indexRouter = require("./routes/index");
@@ -52,6 +53,27 @@ connection.query("SELECT * FROM Books", (err, results, fields) => {
   if (err) throw err;
   console.log(results);
 });
+
+//axios function to fetch book covers
+async function fetchBookCover(isbn) {
+  const baseUrl = "https://covers.openlibrary.org/b/isbn/";
+  const size = "S";
+
+  try {
+    // First, check if the cover exists
+    const response = await axios.head(`${baseUrl}${isbn}-${size}.jpg`);
+
+    if (response.status === 200) {
+      return `${baseUrl}${isbn}-${size}.jpg`;
+    } else {
+      console.log(`No cover found for ISBN: ${isbn}`);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching book cover:", error);
+    return null;
+  }
+}
 
 // Route to handle search queries
 app.get("/search", function (req, res, next) {
@@ -103,7 +125,7 @@ app.get("/books/find", function (req, res) {
 
 //add route for add authors
 app.get("/authors/add", function (req, res) {
-  res.render("authoradd", {
+  res.render("add_Authors", {
     title: "Add author",
   });
 });
